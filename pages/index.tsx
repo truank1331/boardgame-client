@@ -1,15 +1,19 @@
 import type { NextPage } from "next";
-import Head from "next/head";
 
 import { AppBarComponent } from "./component/AppBarComponent";
-import styled from "styled-components";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 import { BoardgameComponent } from "./component/BoardgameListComponent";
-import { Avatar, Box, LinearProgress, Modal, Skeleton, Typography } from "@mui/material";
+import { Box, LinearProgress, Skeleton, SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
 import { BoardgameDialog } from "./component/BoardgameDialog";
+
+import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
+import SaveIcon from "@mui/icons-material/Save";
+import PrintIcon from "@mui/icons-material/Print";
+import ShareIcon from "@mui/icons-material/Share";
+import { FormDialog } from "./component/FormDialog";
 
 export interface BoardgameData {
   gameName: String;
@@ -19,13 +23,24 @@ export interface BoardgameData {
   buyDate: String;
 }
 
+const actions = [
+  { icon: <FileCopyIcon />, name: "Copy" },
+  { icon: <SaveIcon />, name: "Save" },
+  { icon: <PrintIcon />, name: "Print" },
+];
+
 const Home: NextPage = () => {
   const [boardgames, setBoardgames] = useState<BoardgameData[]>([]);
   const [boardgame, setBoardgame] = useState<BoardgameData>({} as BoardgameData);
+
   const [modalStatus, setModalStatus] = useState(false);
+  const [formModalStatus, setFormModalStatus] = useState(false);
 
   const handleOpenModal = () => setModalStatus(true);
   const handleCloseModal = () => setModalStatus(false);
+
+  const handleOpenFormModal = () => setFormModalStatus(true);
+  const handleCloseFormModal = () => setFormModalStatus(false);
 
   const onClickBoardgame = (item: BoardgameData) => {
     setBoardgame(item);
@@ -42,31 +57,34 @@ const Home: NextPage = () => {
   }, []);
 
   return (
-    <div
+    <Box
       style={{
         display: "flex",
         flexDirection: "column",
         justifyContent: "flex-start",
       }}
     >
-      <AppBarComponent title="Home" />
-      <div style={{ margin: "64px", marginTop: "32px" }}>
-        <>
+      <AppBarComponent title="BoardGame" />
+      <Box style={{ margin: "64px", marginTop: "32px" }}>
+        <Box>
           <Skeleton variant="rectangular" style={{ height: "50vh", maxHeight: "400px" }} />
           <LinearProgress color="secondary" />
-        </>
-        <>
+        </Box>
+        <Box>
           <BoardgameComponent boardgameData={boardgames} onClickBoardgame={onClickBoardgame} />
-        </>
-      </div>
+        </Box>
+      </Box>
 
-      <div />
-      <BoardgameDialog
-        boardgame={boardgame}
-        handleCloseModal={handleCloseModal}
-        modalStatus={modalStatus}
-      ></BoardgameDialog>
-    </div>
+      <Box />
+      <BoardgameDialog boardgame={boardgame} handleCloseModal={handleCloseModal} modalStatus={modalStatus} />
+      <FormDialog handleCloseModal={handleCloseFormModal} modalStatus={formModalStatus} />
+      <SpeedDial
+        ariaLabel="SpeedDial basic example"
+        sx={{ position: "absolute", bottom: "32px", right: "64px" }}
+        icon={<SpeedDialIcon />}
+        onClick={handleOpenFormModal}
+      />
+    </Box>
   );
 };
 

@@ -1,5 +1,5 @@
-import { AppBar, Box, Button, IconButton, Modal, Toolbar, Typography } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
+import { Avatar, Box, Chip, CircularProgress, Modal, Stack, Typography } from "@mui/material";
+import { deepOrange, deepPurple, green } from "@mui/material/colors";
 import { BoardgameData } from "..";
 
 interface BoardgameDialogProps {
@@ -25,22 +25,49 @@ export function BoardgameDialog(props: BoardgameDialogProps) {
         sx={{
           position: "absolute",
           display: "flex",
-          flexDirection: "column",
+          flexDirection: "row",
           flex: 1,
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
           bgcolor: "background.paper",
           boxShadow: 24,
-          maxWidth: 1000,
           p: 4,
         }}
       >
         <img src={boardgame.pictureUrl} loading="lazy" width={"fit-content"} />
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-          {boardgame.gameName}
-        </Typography>
-        <Typography>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</Typography>
+        <Box sx={{ marginLeft: "16px", width: "fit-content", minWidth: 600 }}>
+          <Box sx={{ marginBottom: "8px" }}>
+            <Box sx={{ display: "flex", flexDirection: "row", flex: 1 }}>
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                {boardgame.gameName}
+              </Typography>
+              <Chip label="Play Always" color="success" sx={{ marginLeft: "8px" }} />
+            </Box>
+
+            <Typography>{boardgame.thaiName}</Typography>
+          </Box>
+
+          <Stack direction="row" spacing={2}>
+            <Avatar sx={{ bgcolor: deepOrange[500] }}>O</Avatar>
+            <Avatar sx={{ bgcolor: deepPurple[500] }}>PB</Avatar>
+            <Avatar sx={{}}>T</Avatar>
+            <Avatar sx={{ bgcolor: green[500] }}>P</Avatar>
+          </Stack>
+          <Box
+            sx={{
+              marginTop: "16px",
+              display: "flex",
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "80%",
+            }}
+          >
+            <CircularProgress size={64} />
+          </Box>
+        </Box>
       </Box>
     </Modal>
   );

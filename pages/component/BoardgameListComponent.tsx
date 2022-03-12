@@ -14,6 +14,7 @@ interface BoardgameProps {
   boardgameData: BoardgameData[];
   onClickBoardgame: Function;
 }
+
 export function BoardgameComponent(props: BoardgameProps) {
   const boardgames = props.boardgameData;
   const onClickBoardgame = props.onClickBoardgame;
@@ -33,8 +34,7 @@ export function BoardgameComponent(props: BoardgameProps) {
           <SwiperSlide key={index}>
             <Card
               key={5}
-              sx={{ maxWidth: 500 }}
-              style={{ marginBottom: "16px" }}
+              sx={{ maxWidth: 500, marginBottom: "16px" }}
               onClick={() => {
                 onClickBoardgame(item);
               }}
