@@ -9,10 +9,6 @@ import { BoardgameComponent } from "../public/component/BoardgameListComponent";
 import { Box, LinearProgress, Skeleton, SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
 import { BoardgameDialog } from "../public/component/BoardgameDialog";
 
-import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
-import SaveIcon from "@mui/icons-material/Save";
-import PrintIcon from "@mui/icons-material/Print";
-import ShareIcon from "@mui/icons-material/Share";
 import { FormDialog } from "../public/component/FormDialog";
 
 export interface BoardgameData {
@@ -23,14 +19,14 @@ export interface BoardgameData {
   buyDate: String;
 }
 
-const actions = [
-  { icon: <FileCopyIcon />, name: "Copy" },
-  { icon: <SaveIcon />, name: "Save" },
-  { icon: <PrintIcon />, name: "Print" },
-];
+const SERVER_PRIVATE = "192.168.1.102";
 
 const Home: NextPage = () => {
   const [boardgames, setBoardgames] = useState<BoardgameData[]>([]);
+  const [histories, setHistories] = useState<any[]>([]);
+  const [scores, setScores] = useState<any[]>([]);
+  const [users, setUsers] = useState<any[]>([]);
+
   const [boardgame, setBoardgame] = useState<BoardgameData>({} as BoardgameData);
 
   const [modalStatus, setModalStatus] = useState(false);
@@ -49,9 +45,30 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/demo/test1")
+      .get(`http://${SERVER_PRIVATE}:8080/boardgame/list`)
       .then((res) => {
         setBoardgames(res.data);
+      })
+      .catch(() => {});
+
+    axios
+      .get(`http://${SERVER_PRIVATE}:8080/history/list`)
+      .then((res) => {
+        setHistories(res.data);
+      })
+      .catch(() => {});
+
+    axios
+      .get(`http://${SERVER_PRIVATE}:8080/score/list`)
+      .then((res) => {
+        setScores(res.data);
+      })
+      .catch(() => {});
+
+    axios
+      .get(`http://${SERVER_PRIVATE}:8080/user/list`)
+      .then((res) => {
+        setUsers(res.data);
       })
       .catch(() => {});
   }, []);
@@ -77,7 +94,12 @@ const Home: NextPage = () => {
 
       <Box />
       <BoardgameDialog boardgame={boardgame} handleCloseModal={handleCloseModal} modalStatus={modalStatus} />
-      <FormDialog handleCloseModal={handleCloseFormModal} modalStatus={formModalStatus} />
+      <FormDialog
+        handleCloseModal={handleCloseFormModal}
+        modalStatus={formModalStatus}
+        gameList={boardgames}
+        playerList={users}
+      />
       <SpeedDial
         ariaLabel="SpeedDial basic example"
         sx={{ position: "absolute", bottom: "32px", right: "64px" }}

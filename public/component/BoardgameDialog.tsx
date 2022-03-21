@@ -1,6 +1,7 @@
 import { Avatar, Box, Chip, CircularProgress, Modal, Stack, Typography } from "@mui/material";
 import { deepOrange, deepPurple, green } from "@mui/material/colors";
 import { BoardgameData } from "../../pages";
+import { AvartarComponent } from "./Avatar";
 
 interface BoardgameDialogProps {
   modalStatus: boolean;
@@ -35,8 +36,10 @@ export function BoardgameDialog(props: BoardgameDialogProps) {
           p: 4,
         }}
       >
-        <img src={boardgame.pictureUrl} loading="lazy" width={"fit-content"} />
-        <Box sx={{ marginLeft: "16px", width: "fit-content", minWidth: 600 }}>
+        <Box sx={{ display: "flex", flex: 1 }}>
+          <img src={boardgame.pictureUrl} loading="lazy" width={"fit-content"} style={{ maxWidth: "800px" }} />
+        </Box>
+        <Box sx={{ marginLeft: "16px", width: "fit-content", minWidth: "600px" }}>
           <Box sx={{ marginBottom: "8px" }}>
             <Box sx={{ display: "flex", flexDirection: "row", flex: 1 }}>
               <Typography id="modal-modal-title" variant="h6" component="h2">
@@ -49,10 +52,10 @@ export function BoardgameDialog(props: BoardgameDialogProps) {
           </Box>
 
           <Stack direction="row" spacing={2}>
-            <Avatar sx={{ bgcolor: deepOrange[500] }}>O</Avatar>
-            <Avatar sx={{ bgcolor: deepPurple[500] }}>PB</Avatar>
-            <Avatar sx={{}}>T</Avatar>
-            <Avatar sx={{ bgcolor: green[500] }}>P</Avatar>
+            <AvartarComponent name={"OOB"} />
+            <AvartarComponent name={"PB"} />
+            <AvartarComponent name={"TR"} />
+            <AvartarComponent name={"PL"} />
           </Stack>
           <Box
             sx={{
