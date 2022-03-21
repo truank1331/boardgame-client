@@ -1,19 +1,19 @@
 import type { NextPage } from "next";
 
-import { AppBarComponent } from "./component/AppBarComponent";
+import { AppBarComponent } from "../public/component/AppBarComponent";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import { BoardgameComponent } from "./component/BoardgameListComponent";
+import { BoardgameComponent } from "../public/component/BoardgameListComponent";
 import { Box, LinearProgress, Skeleton, SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
-import { BoardgameDialog } from "./component/BoardgameDialog";
+import { BoardgameDialog } from "../public/component/BoardgameDialog";
 
 import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import PrintIcon from "@mui/icons-material/Print";
 import ShareIcon from "@mui/icons-material/Share";
-import { FormDialog } from "./component/FormDialog";
+import { FormDialog } from "../public/component/FormDialog";
 
 export interface BoardgameData {
   gameName: String;

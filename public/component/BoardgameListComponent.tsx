@@ -7,7 +7,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 import { Pagination, Navigation } from "swiper";
-import { BoardgameData } from "..";
+import { BoardgameData } from "../../pages";
 import { useEffect } from "react";
 
 interface BoardgameProps {

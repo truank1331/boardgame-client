@@ -1,6 +1,6 @@
 import { Avatar, Box, Chip, CircularProgress, Modal, Stack, Typography } from "@mui/material";
 import { deepOrange, deepPurple, green } from "@mui/material/colors";
-import { BoardgameData } from "..";
+import { BoardgameData } from "../../pages";
 
 interface BoardgameDialogProps {
   modalStatus: boolean;
