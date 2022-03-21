@@ -37,7 +37,12 @@ export function BoardgameDialog(props: BoardgameDialogProps) {
         }}
       >
         <Box sx={{ display: "flex", flex: 1 }}>
-          <img src={boardgame.pictureUrl} loading="lazy" width={"fit-content"} style={{ maxWidth: "800px" }} />
+          <img
+            src={boardgame.pictureUrl}
+            loading="lazy"
+            width={"fit-content"}
+            style={{ maxWidth: "800px", maxHeight: "1400px" }}
+          />
         </Box>
         <Box sx={{ marginLeft: "16px", width: "fit-content", minWidth: "600px" }}>
           <Box sx={{ marginBottom: "8px" }}>
