@@ -9,6 +9,7 @@ import {
   Chip,
   Fab,
   FormControlLabel,
+  List,
   Modal,
   Paper,
   Switch,
@@ -20,7 +21,6 @@ import AddIcon from "@mui/icons-material/Add";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
 import { BoardgameData } from "../../pages";
-import { TabContext, TabList, TabPanel } from "@mui/lab";
 
 interface FormDialogProps {
   modalStatus: boolean;
@@ -45,32 +45,32 @@ interface tempUsernameListData {
   username: string;
 }
 
-const generateKey = () => {
-  return `_${new Date().getTime()}`;
-};
-
 export function FormDialog(props: FormDialogProps) {
   const modalStatus = props.modalStatus;
   const handleCloseModal = props.handleCloseModal;
 
-  const [gameList, setGameList] = useState<string[]>([]);
-  const [playerList, setPlayerList] = useState<string[]>([]);
+  const [boardgameDropdownList, setBoardgameDropdownList] = useState<string[]>([]);
+  const [playerDropdownList, setPlayerDropdownList] = useState<string[]>([]);
 
   const [playerNumber, setPlayerNumber] = useState<FormPlayerData[]>([
     { username: "", description: "", isWin: false, score: 0, key: 0 },
   ]);
 
-  const [value, setValue] = useState<Date | null>(new Date());
-  const [isWin, setIsWin] = useState<boolean>(false);
+  const [dateValue, setDateValue] = useState<Date | null>(new Date());
+  const [selectedBoardgame, setSelectedBoardgame] = useState<String>("");
 
   const [tempUsernameList, setTempUsernameList] = useState<tempUsernameListData[]>([]);
+
+  const shouldSubmit = () => {
+    return true;
+  };
 
   useEffect(() => {
     if (props.gameList.length > 0) {
       const tempGameList = props.gameList.map((item) => {
         return `${item.gameName} - ${item.thaiName}`;
       });
-      setGameList(tempGameList);
+      setBoardgameDropdownList(tempGameList);
     }
   }, [props.gameList]);
 
@@ -79,18 +79,22 @@ export function FormDialog(props: FormDialogProps) {
       const tempPlayerListList = props.playerList.map((item) => {
         return `${item.username}`;
       });
-      setPlayerList(tempPlayerListList);
+      setPlayerDropdownList(tempPlayerListList);
     }
   }, [props.playerList]);
+
+  useEffect(() => {
+    console.log("playerNumber", playerNumber);
+  }, [playerNumber]);
 
   return (
     <Modal
       open={modalStatus}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
       onClose={() => {
         handleCloseModal();
       }}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
     >
       <Box
         sx={{
@@ -106,13 +110,13 @@ export function FormDialog(props: FormDialogProps) {
           p: 4,
         }}
       >
-        <Box sx={{ marginLeft: "16px", width: "fit-content", minWidth: 600 }}>
+        <Box sx={{ marginLeft: "16px", width: "fit-content", minWidth: "600px" }}>
           <Box sx={{ marginBottom: "8px" }}>
-            <Box sx={{ display: "flex", flexDirection: "row" }}>
+            <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
               <Typography id="modal-modal-title" variant="h5" component="h2">
                 Add Game History
               </Typography>
-              <Chip label="Play Always" color="warning" sx={{ marginLeft: "8px" }} />
+              <Chip label={`${playerNumber.length} Players`} color="secondary" sx={{ marginLeft: "8px" }} />
             </Box>
 
             <Typography>เพิ่มประวัติการเล่น</Typography>
@@ -121,103 +125,176 @@ export function FormDialog(props: FormDialogProps) {
           <Autocomplete
             disablePortal
             id="combo-box-demo"
-            options={gameList}
+            options={boardgameDropdownList}
             sx={{ width: "100%", marginBottom: "16px" }}
             renderInput={(params) => <TextField {...params} label="Game" />}
-          />
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-              label="Date"
-              value={value}
-              onChange={(newValue) => {
-                setValue(newValue);
-              }}
-              renderInput={(params) => <TextField {...params} />}
-            />
-          </LocalizationProvider>
-          {playerNumber.map((item, index) => (
-            <Box sx={{ width: "100%", typography: "body1" }} key={index}>
-              <Paper
-                elevation={8}
-                sx={{
-                  display: "flex",
-                  flex: 1,
-                  flexDirection: "column",
-                  marginBottom: "16px",
-                  marginTop: "16px",
-                  padding: "16px",
-                }}
-              >
-                <Box sx={{ display: "flex", flex: 1, flexDirection: "row", justifyContent: "space-between" }}>
-                  <Autocomplete
-                    disablePortal
-                    id="combo-box-demo"
-                    options={playerList.filter((item) => !tempUsernameList.find((ele) => ele.username == item))}
-                    sx={{ width: "70%", marginBottom: "8px", marginRight: "8px" }}
-                    onChange={(event, value) => {
-                      const oldTempUsernameList = tempUsernameList.filter((item) => item.key !== index);
-                      const newData: tempUsernameListData = { key: index, username: value || "" };
-                      setTempUsernameList((prev) => [...oldTempUsernameList, newData]);
-                    }}
-                    renderInput={(params) => <TextField {...params} label="Player Name" />}
-                  />
-                  <TextField label="Score" variant="outlined" sx={{ width: "30%", marginBottom: "8px" }} />
-                </Box>
-                <TextField label="Description" variant="outlined" sx={{ width: "100%", marginBottom: "8px" }} />
-                <Box sx={{ display: "flex", flex: 1, flexDirection: "row", justifyContent: "space-between" }}>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={isWin}
-                        onChange={() => {
-                          setIsWin(!isWin);
-                        }}
-                        name="gilad"
-                      />
-                    }
-                    label={isWin ? "This Player are Winner 👑👑👑 " : "This Player are Lose 😢😢😢"}
-                    labelPlacement="end"
-                  />
-                  {index == playerNumber.length - 1 && (
-                    <Fab
-                      color="error"
-                      aria-label="add"
-                      size="small"
-                      sx={{ alignSelf: "flex-end" }}
-                      onClick={() => {
-                        const newPlayerNumber = playerNumber.filter((item) => item.key !== index);
-                        const newTempUsernameList = tempUsernameList.filter((item) => item.key !== index);
-                        setTempUsernameList(newTempUsernameList);
-                        setPlayerNumber(newPlayerNumber);
-                      }}
-                    >
-                      <DeleteIcon />
-                    </Fab>
-                  )}
-                </Box>
-              </Paper>
-            </Box>
-          ))}
-
-          <Fab
-            color="primary"
-            variant="extended"
-            sx={{ height: "32px", width: "100%", marginBottom: "16px" }}
-            onClick={() => {
-              const newData: FormPlayerData = {
-                username: "",
-                description: "",
-                isWin: false,
-                score: 0,
-                key: playerNumber.length,
-              };
-              setPlayerNumber((prev) => [...playerNumber, newData]);
-              setTempUsernameList((prev) => [...tempUsernameList, { key: tempUsernameList.length + 1, username: "" }]);
+            onChange={(event, value) => {
+              setSelectedBoardgame(value || "");
             }}
+          />
+
+          <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                label="Date"
+                value={dateValue}
+                onChange={(newValue) => {
+                  setDateValue(newValue);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          </Box>
+
+          <Paper
+            elevation={0}
+            style={{ maxHeight: 400, overflow: "auto", padding: "8px", marginTop: "16px", marginBottom: "16px" }}
           >
-            <AddIcon sx={{ mr: 1 }} />
-            Add More Player
-          </Fab>
+            {playerNumber.map((item, index) => (
+              <Box sx={{ width: "100%", typography: "body1" }} key={index}>
+                <Paper
+                  elevation={8}
+                  sx={{
+                    display: "flex",
+                    flex: 1,
+                    flexDirection: "column",
+                    marginBottom: "16px",
+                    marginTop: "16px",
+                    padding: "16px",
+                  }}
+                >
+                  <Box sx={{ display: "flex", flex: 1, flexDirection: "row", justifyContent: "space-between" }}>
+                    <Autocomplete
+                      disablePortal
+                      id={`combo-box-demo`}
+                      options={playerDropdownList.filter(
+                        (item) => !tempUsernameList.find((ele) => ele.username == item)
+                      )}
+                      sx={{ width: "70%", marginBottom: "8px", marginRight: "8px" }}
+                      onChange={(event, value) => {
+                        const oldTempUsernameList = tempUsernameList.filter((item) => item.key !== index);
+                        const newData: tempUsernameListData = { key: index, username: value || "" };
+                        setTempUsernameList((prev) => [...oldTempUsernameList, newData]);
+
+                        const oldValue = playerNumber.find((item) => item.key == index) || ({} as FormPlayerData);
+                        const newPlayerNumber: FormPlayerData = {
+                          description: oldValue.description,
+                          isWin: oldValue.isWin,
+                          key: oldValue.key,
+                          score: oldValue.score,
+                          username: value || "",
+                        };
+                        const oldPlayerNumber = playerNumber.filter((item) => item.key !== index);
+                        setPlayerNumber((prev) => [...oldPlayerNumber, newPlayerNumber]);
+                      }}
+                      renderInput={(params) => <TextField {...params} label="Player Name" />}
+                    />
+                    <TextField
+                      label="Score"
+                      variant="outlined"
+                      sx={{ width: "30%", marginBottom: "8px" }}
+                      onChange={(event) => {
+                        const oldValue = playerNumber.find((item) => item.key == index) || ({} as FormPlayerData);
+                        const newPlayerNumber: FormPlayerData = {
+                          description: oldValue.description,
+                          isWin: oldValue.isWin,
+                          key: oldValue.key,
+                          score: +event.target.value,
+                          username: oldValue.username,
+                        };
+                        const oldPlayerNumber = playerNumber.filter((item) => item.key !== index);
+                        setPlayerNumber((prev) => [...oldPlayerNumber, newPlayerNumber]);
+                      }}
+                    />
+                  </Box>
+                  <TextField
+                    label="Description"
+                    variant="outlined"
+                    sx={{ width: "100%", marginBottom: "8px" }}
+                    onChange={(event) => {
+                      const oldValue = playerNumber.find((item) => item.key == index) || ({} as FormPlayerData);
+                      const newPlayerNumber: FormPlayerData = {
+                        description: event.target.value,
+                        isWin: oldValue.isWin,
+                        key: oldValue.key,
+                        score: oldValue.score,
+                        username: oldValue.username,
+                      };
+                      const oldPlayerNumber = playerNumber.filter((item) => item.key !== index);
+                      setPlayerNumber((prev) => [...oldPlayerNumber, newPlayerNumber]);
+                    }}
+                  />
+                  <Box sx={{ display: "flex", flex: 1, flexDirection: "row", justifyContent: "space-between" }}>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={playerNumber.find((item) => item.key == index)?.isWin || false}
+                          onChange={() => {
+                            const oldValue = playerNumber.find((item) => item.key == index) || ({} as FormPlayerData);
+                            const newPlayerNumber: FormPlayerData = {
+                              description: oldValue.description,
+                              isWin: !oldValue.isWin,
+                              key: oldValue.key,
+                              score: oldValue.score,
+                              username: oldValue.username,
+                            };
+                            const oldPlayerNumber = playerNumber.filter((item) => item.key !== index);
+                            setPlayerNumber((prev) => [...oldPlayerNumber, newPlayerNumber]);
+                          }}
+                        />
+                      }
+                      label={
+                        playerNumber.find((item) => item.key == index)?.isWin
+                          ? "This Player are Winner 👑👑👑 "
+                          : "This Player are Lose 😢😢😢"
+                      }
+                      labelPlacement="end"
+                    />
+                    {playerNumber.length > 1 && index == playerNumber.length - 1 && (
+                      <Fab
+                        color="error"
+                        aria-label="add"
+                        size="small"
+                        sx={{ alignSelf: "flex-end" }}
+                        onClick={() => {
+                          const newPlayerNumber = playerNumber.filter((item) => item.key !== index);
+                          const newTempUsernameList = tempUsernameList.filter((item) => item.key !== index);
+                          setTempUsernameList(newTempUsernameList);
+                          setPlayerNumber(newPlayerNumber);
+                        }}
+                      >
+                        <DeleteIcon />
+                      </Fab>
+                    )}
+                  </Box>
+                </Paper>
+              </Box>
+            ))}
+          </Paper>
+          {playerNumber.length + 1 <= playerDropdownList.length && (
+            <Fab
+              color="success"
+              variant="extended"
+              sx={{ height: "32px", width: "100%", marginBottom: "16px" }}
+              onClick={() => {
+                const newData: FormPlayerData = {
+                  username: "",
+                  description: "",
+                  isWin: false,
+                  score: 0,
+                  key: playerNumber.length,
+                };
+                setPlayerNumber((prev) => [...playerNumber, newData]);
+                setTempUsernameList((prev) => [
+                  ...tempUsernameList,
+                  { key: tempUsernameList.length + 1, username: "" },
+                ]);
+              }}
+            >
+              <AddIcon sx={{ mr: 1 }} />
+              Add More Player
+            </Fab>
+          )}
 
           <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "flex-end" }}>
             <Button
@@ -230,7 +307,7 @@ export function FormDialog(props: FormDialogProps) {
               Cancel
             </Button>
             <Box sx={{ width: "4px" }} />
-            <Button variant="contained" color="secondary" disabled>
+            <Button variant="contained" color="secondary" disabled={shouldSubmit()}>
               Submit
             </Button>
           </Box>
