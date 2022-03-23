@@ -9,7 +9,6 @@ import {
   Chip,
   Fab,
   FormControlLabel,
-  List,
   Modal,
   Paper,
   Switch,
@@ -42,7 +41,7 @@ interface FormSubmitData {
 }
 interface tempUsernameListData {
   key: number;
-  username: string;
+  username: String;
 }
 
 export function FormDialog(props: FormDialogProps) {
@@ -56,13 +55,19 @@ export function FormDialog(props: FormDialogProps) {
     { username: "", description: "", isWin: false, score: 0, key: 0 },
   ]);
 
-  const [dateValue, setDateValue] = useState<Date | null>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [selectedBoardgame, setSelectedBoardgame] = useState<String>("");
 
   const [tempUsernameList, setTempUsernameList] = useState<tempUsernameListData[]>([]);
 
   const shouldSubmit = () => {
-    return true;
+    if (selectedBoardgame.length == 0) return true;
+
+    if (playerNumber.filter((item) => item.username.length == 0).length > 0) return true;
+
+    if (playerNumber.filter((item) => item.score <= 0).length > 0) return true;
+
+    return false;
   };
 
   useEffect(() => {
@@ -82,10 +87,6 @@ export function FormDialog(props: FormDialogProps) {
       setPlayerDropdownList(tempPlayerListList);
     }
   }, [props.playerList]);
-
-  useEffect(() => {
-    console.log("playerNumber", playerNumber);
-  }, [playerNumber]);
 
   return (
     <Modal
@@ -128,6 +129,7 @@ export function FormDialog(props: FormDialogProps) {
             options={boardgameDropdownList}
             sx={{ width: "100%", marginBottom: "16px" }}
             renderInput={(params) => <TextField {...params} label="Game" />}
+            value={selectedBoardgame}
             onChange={(event, value) => {
               setSelectedBoardgame(value || "");
             }}
@@ -137,9 +139,9 @@ export function FormDialog(props: FormDialogProps) {
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Date"
-                value={dateValue}
+                value={selectedDate}
                 onChange={(newValue) => {
-                  setDateValue(newValue);
+                  setSelectedDate(newValue);
                 }}
                 renderInput={(params) => <TextField {...params} />}
               />
@@ -171,6 +173,7 @@ export function FormDialog(props: FormDialogProps) {
                         (item) => !tempUsernameList.find((ele) => ele.username == item)
                       )}
                       sx={{ width: "70%", marginBottom: "8px", marginRight: "8px" }}
+                      value={playerNumber.find((item) => item.key == index)?.username || ""}
                       onChange={(event, value) => {
                         const oldTempUsernameList = tempUsernameList.filter((item) => item.key !== index);
                         const newData: tempUsernameListData = { key: index, username: value || "" };
@@ -193,6 +196,7 @@ export function FormDialog(props: FormDialogProps) {
                       label="Score"
                       variant="outlined"
                       sx={{ width: "30%", marginBottom: "8px" }}
+                      value={playerNumber.find((item) => item.key == index)?.score || ""}
                       onChange={(event) => {
                         const oldValue = playerNumber.find((item) => item.key == index) || ({} as FormPlayerData);
                         const newPlayerNumber: FormPlayerData = {
@@ -211,6 +215,7 @@ export function FormDialog(props: FormDialogProps) {
                     label="Description"
                     variant="outlined"
                     sx={{ width: "100%", marginBottom: "8px" }}
+                    value={playerNumber.find((item) => item.key == index)?.description || ""}
                     onChange={(event) => {
                       const oldValue = playerNumber.find((item) => item.key == index) || ({} as FormPlayerData);
                       const newPlayerNumber: FormPlayerData = {
@@ -229,6 +234,7 @@ export function FormDialog(props: FormDialogProps) {
                       control={
                         <Switch
                           checked={playerNumber.find((item) => item.key == index)?.isWin || false}
+                          value={playerNumber.find((item) => item.key == index)?.isWin || false}
                           onChange={() => {
                             const oldValue = playerNumber.find((item) => item.key == index) || ({} as FormPlayerData);
                             const newPlayerNumber: FormPlayerData = {
@@ -307,7 +313,16 @@ export function FormDialog(props: FormDialogProps) {
               Cancel
             </Button>
             <Box sx={{ width: "4px" }} />
-            <Button variant="contained" color="secondary" disabled={shouldSubmit()}>
+            <Button
+              variant="contained"
+              color="secondary"
+              disabled={shouldSubmit()}
+              onClick={() => {
+                console.log(selectedBoardgame);
+                console.log(selectedDate);
+                console.log(playerNumber);
+              }}
+            >
               Submit
             </Button>
           </Box>
