@@ -19,12 +19,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
-import { BoardgameData } from "../../pages";
+import { BoardgameApiData } from "../../pages";
 
 interface FormDialogProps {
   modalStatus: boolean;
   handleCloseModal: Function;
-  gameList: BoardgameData[];
+  gameList: BoardgameApiData[];
   playerList: any[];
 }
 interface FormPlayerData {

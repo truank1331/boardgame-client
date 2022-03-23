@@ -7,11 +7,11 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 import { Pagination, Navigation } from "swiper";
-import { BoardgameData } from "../../pages";
+import { BoardgameApiData } from "../../pages";
 import { useEffect } from "react";
 
 interface BoardgameProps {
-  boardgameData: BoardgameData[];
+  boardgameData: BoardgameApiData[];
   onClickBoardgame: Function;
 }
 
@@ -30,7 +30,7 @@ export function BoardgameComponent(props: BoardgameProps) {
       style={{ marginTop: 32 }}
     >
       {boardgames.length > 0 ? (
-        boardgames.map((item: BoardgameData, index) => (
+        boardgames.map((item: BoardgameApiData, index) => (
           <SwiperSlide key={index}>
             <Card
               key={5}

@@ -1,10 +1,10 @@
 import { Avatar } from "@mui/material";
 
 interface AvartarProps {
-  name: string;
+  name: String;
 }
 
-function stringToColor(string: string) {
+export function stringToColor(string: String) {
   let hash = 0;
   let i;
   for (i = 0; i < string.length; i += 1) {
@@ -17,8 +17,7 @@ function stringToColor(string: string) {
     const value = (hash >> (i * 8)) & 0xff;
     color += `00${value.toString(16)}`.substr(-2);
   }
-
-  return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+  return color;
 }
 
 function stringAvatar(name: string) {

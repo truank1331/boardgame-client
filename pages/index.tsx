@@ -11,23 +11,29 @@ import { BoardgameDialog } from "../public/component/BoardgameDialog";
 
 import { FormDialog } from "../public/component/FormDialog";
 
-export interface BoardgameData {
+export interface BoardgameApiData {
   gameName: String;
   thaiName: String;
   pictureUrl: string;
   price: Number;
   buyDate: String;
 }
+export interface UserApiData {
+  username: String;
+  role: String;
+  email: String;
+  password: String;
+}
 
 const SERVER_PRIVATE = "192.168.1.102";
 
 const Home: NextPage = () => {
-  const [boardgames, setBoardgames] = useState<BoardgameData[]>([]);
+  const [boardgames, setBoardgames] = useState<BoardgameApiData[]>([]);
   const [histories, setHistories] = useState<any[]>([]);
   const [scores, setScores] = useState<any[]>([]);
-  const [users, setUsers] = useState<any[]>([]);
+  const [users, setUsers] = useState<UserApiData[]>([]);
 
-  const [boardgame, setBoardgame] = useState<BoardgameData>({} as BoardgameData);
+  const [boardgame, setBoardgame] = useState<BoardgameApiData>({} as BoardgameApiData);
 
   const [modalStatus, setModalStatus] = useState(false);
   const [formModalStatus, setFormModalStatus] = useState(false);
@@ -38,7 +44,7 @@ const Home: NextPage = () => {
   const handleOpenFormModal = () => setFormModalStatus(true);
   const handleCloseFormModal = () => setFormModalStatus(false);
 
-  const onClickBoardgame = (item: BoardgameData) => {
+  const onClickBoardgame = (item: BoardgameApiData) => {
     setBoardgame(item);
     handleOpenModal();
   };
@@ -93,7 +99,12 @@ const Home: NextPage = () => {
       </Box>
 
       <Box />
-      <BoardgameDialog boardgame={boardgame} handleCloseModal={handleCloseModal} modalStatus={modalStatus} />
+      <BoardgameDialog
+        boardgame={boardgame}
+        handleCloseModal={handleCloseModal}
+        modalStatus={modalStatus}
+        users={users}
+      />
       <FormDialog
         handleCloseModal={handleCloseFormModal}
         modalStatus={formModalStatus}

@@ -1,17 +1,73 @@
 import { Avatar, Box, Chip, CircularProgress, Modal, Stack, Typography } from "@mui/material";
 import { deepOrange, deepPurple, green } from "@mui/material/colors";
-import { BoardgameData } from "../../pages";
-import { AvartarComponent } from "./Avatar";
+import { useEffect, useState } from "react";
+import { BoardgameApiData, UserApiData } from "../../pages";
+import { AvartarComponent, stringToColor } from "./Avatar";
+
+import React from "react";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  ChartData,
+} from "chart.js";
+
+import { Line } from "react-chartjs-2";
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 interface BoardgameDialogProps {
   modalStatus: boolean;
   handleCloseModal: Function;
-  boardgame: BoardgameData;
+  boardgame: BoardgameApiData;
+  users: UserApiData[];
 }
+
 export function BoardgameDialog(props: BoardgameDialogProps) {
   const modalStatus = props.modalStatus;
   const handleCloseModal = props.handleCloseModal;
+  const users = props.users;
   const boardgame = props.boardgame;
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [chartData, setChartData] = useState<ChartData>();
+
+  useEffect(() => {
+    setChartData({
+      labels: ["January", "February", "March", "April", "May", "June", "July"],
+      datasets: [
+        {
+          label: users[0].username,
+          data: [600, 400, 800, 74, 5, 6, 9],
+          borderColor: stringToColor(users[0].username),
+          backgroundColor: stringToColor(users[0].username),
+        },
+        {
+          label: users[1].username,
+          data: [40, 500, 80, 744, 58, 67, 92],
+          borderColor: stringToColor(users[1].username),
+          backgroundColor: stringToColor(users[1].username),
+        },
+        {
+          label: users[2].username,
+          data: [40, 5, 44, 744, 58, 700, 600],
+          borderColor: stringToColor(users[2].username),
+          backgroundColor: stringToColor(users[2].username),
+        },
+        {
+          label: users[3].username,
+          data: [40, 500, 80, 744, 58, 70, 700],
+          borderColor: stringToColor(users[3].username),
+          backgroundColor: stringToColor(users[3].username),
+        },
+      ],
+    });
+  }, []);
 
   return (
     <Modal
@@ -36,7 +92,7 @@ export function BoardgameDialog(props: BoardgameDialogProps) {
           p: 4,
         }}
       >
-        <Box sx={{ display: "flex", flex: 1 }}>
+        <Box sx={{ display: "flex", flex: 1, width: "fit-content", height: "fit-content" }}>
           <img
             src={boardgame.pictureUrl}
             loading="lazy"
@@ -50,31 +106,96 @@ export function BoardgameDialog(props: BoardgameDialogProps) {
               <Typography id="modal-modal-title" variant="h6" component="h2">
                 {boardgame.gameName}
               </Typography>
-              <Chip label="Play Always" color="success" sx={{ marginLeft: "8px" }} />
+              <Chip label="All" color="success" sx={{ marginLeft: "8px" }} />
             </Box>
 
             <Typography>{boardgame.thaiName}</Typography>
           </Box>
 
           <Stack direction="row" spacing={2}>
-            <AvartarComponent name={"OOB"} />
-            <AvartarComponent name={"PB"} />
-            <AvartarComponent name={"TR"} />
-            <AvartarComponent name={"PL"} />
+            {users.map((user, index) => (
+              <AvartarComponent name={user.username} key={index} />
+            ))}
           </Stack>
-          <Box
-            sx={{
-              marginTop: "16px",
-              display: "flex",
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "80%",
-            }}
-          >
-            <CircularProgress size={64} />
-          </Box>
+
+          {isLoading ? (
+            <Box
+              sx={{
+                marginTop: "16px",
+                display: "flex",
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "80%",
+              }}
+            >
+              <CircularProgress size={64} />
+            </Box>
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                flex: 1,
+                flexDirection: "column",
+                justifyContent: "space-between",
+                marginTop: "16px",
+                height: "80%",
+              }}
+            >
+              <Box sx={{ alignSelf: "center", display: "flex", flex: 1, width: "100%", height: "fit-content" }}>
+                <Line
+                  options={{
+                    responsive: true,
+                    plugins: {
+                      legend: {
+                        position: "top",
+                      },
+                    },
+                  }}
+                  // @ts-ignore
+                  data={chartData}
+                />
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flex: 1,
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <Box>
+                  <Typography id="modal-modal-title" variant="body1" component="h2">
+                    เล่นล่าสุดเมื่อ 01/01/1999
+                  </Typography>
+                  <Typography id="modal-modal-title" variant="body1" component="h2">
+                    เวลาเล่นทั้งสิ้น X ชม.
+                  </Typography>
+                  <Typography id="modal-modal-title" variant="body1" component="h2">
+                    เวลาเล่นเฉลี่ย X ชม.
+                  </Typography>
+                  <Typography id="modal-modal-title" variant="body1" component="h2">
+                    เล่นครั้งแรกเมื่อ 01/01/1999
+                  </Typography>
+                </Box>
+                <Box sx={{ marginLeft: "64px" }}>
+                  <Typography id="modal-modal-title" variant="body1" component="h2">
+                    จำนวน X เกม
+                  </Typography>
+                  <Typography id="modal-modal-title" variant="body1" component="h2">
+                    แต้มสูงสุด X คะแนน
+                  </Typography>
+                  <Typography id="modal-modal-title" variant="body1" component="h2">
+                    แต้มต่ำสุด X คะแนน
+                  </Typography>
+                  <Typography id="modal-modal-title" variant="body1" component="h2">
+                    แต้มเฉลี่ย X คะแนน
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+          )}
         </Box>
       </Box>
     </Modal>
