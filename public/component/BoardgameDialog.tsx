@@ -1,5 +1,4 @@
-import { Avatar, Box, Chip, CircularProgress, Modal, Stack, Typography } from "@mui/material";
-import { deepOrange, deepPurple, green } from "@mui/material/colors";
+import { Box, Chip, CircularProgress, Modal, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { BoardgameApiData, UserApiData } from "../../pages";
 import { AvartarComponent, stringToColor } from "./Avatar";
@@ -33,41 +32,44 @@ export function BoardgameDialog(props: BoardgameDialogProps) {
   const handleCloseModal = props.handleCloseModal;
   const users = props.users;
   const boardgame = props.boardgame;
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [chartData, setChartData] = useState<ChartData>();
 
   useEffect(() => {
-    setChartData({
-      labels: ["January", "February", "March", "April", "May", "June", "July"],
-      datasets: [
-        {
-          label: users[0].username,
-          data: [600, 400, 800, 74, 5, 6, 9],
-          borderColor: stringToColor(users[0].username),
-          backgroundColor: stringToColor(users[0].username),
-        },
-        {
-          label: users[1].username,
-          data: [40, 500, 80, 744, 58, 67, 92],
-          borderColor: stringToColor(users[1].username),
-          backgroundColor: stringToColor(users[1].username),
-        },
-        {
-          label: users[2].username,
-          data: [40, 5, 44, 744, 58, 700, 600],
-          borderColor: stringToColor(users[2].username),
-          backgroundColor: stringToColor(users[2].username),
-        },
-        {
-          label: users[3].username,
-          data: [40, 500, 80, 744, 58, 70, 700],
-          borderColor: stringToColor(users[3].username),
-          backgroundColor: stringToColor(users[3].username),
-        },
-      ],
-    });
-  }, []);
+    if (users.length > 0) {
+      setChartData({
+        labels: ["January", "February", "March", "April", "May", "June", "July"],
+        datasets: [
+          {
+            label: users[0].username,
+            data: [60, 40, 80, 74, 5, 6, 9],
+            borderColor: stringToColor(users[0].username),
+            backgroundColor: stringToColor(users[0].username),
+          },
+          {
+            label: users[1].username,
+            data: [40, 50, 80, 74, 58, 67, 92],
+            borderColor: stringToColor(users[1].username),
+            backgroundColor: stringToColor(users[1].username),
+          },
+          {
+            label: users[2].username,
+            data: [40, 5, 44, 74, 58, 70, 60],
+            borderColor: stringToColor(users[2].username),
+            backgroundColor: stringToColor(users[2].username),
+          },
+          {
+            label: users[3].username,
+            data: [40, 50, 80, 74, 58, 70, 70],
+            borderColor: stringToColor(users[3].username),
+            backgroundColor: stringToColor(users[3].username),
+          },
+        ],
+      });
+      setIsLoading(false);
+    }
+  }, [users]);
 
   return (
     <Modal

@@ -79,6 +79,10 @@ const Home: NextPage = () => {
       .catch(() => {});
   }, []);
 
+  useEffect(() => {
+    console.log(users);
+  }, [users]);
+
   return (
     <Box
       style={{
