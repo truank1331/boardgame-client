@@ -36,7 +36,7 @@ interface FormPlayerData {
 }
 interface FormSubmitData {
   gameName: String;
-  playDate: Date;
+  playDate: Date | null;
   playerData: FormPlayerData[];
 }
 interface tempUsernameListData {
@@ -318,9 +318,12 @@ export function FormDialog(props: FormDialogProps) {
               color="secondary"
               disabled={shouldSubmit()}
               onClick={() => {
-                console.log(selectedBoardgame);
-                console.log(selectedDate);
-                console.log(playerNumber);
+                const submitData: FormSubmitData = {
+                  gameName: selectedBoardgame,
+                  playDate: selectedDate,
+                  playerData: playerNumber,
+                };
+                console.log(submitData);
               }}
             >
               Submit

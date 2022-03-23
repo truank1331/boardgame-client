@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 import { BoardgameComponent } from "../public/component/BoardgameListComponent";
-import { Box, LinearProgress, Skeleton, SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
+import { Box, LinearProgress, Skeleton, SpeedDial, SpeedDialIcon } from "@mui/material";
 import { BoardgameDialog } from "../public/component/BoardgameDialog";
 
 import { FormDialog } from "../public/component/FormDialog";
