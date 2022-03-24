@@ -47,7 +47,7 @@ export function BoardgameComponent(props: BoardgameProps) {
                     {item.gameName}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Lizards are a
+                    {item.thaiName}
                   </Typography>
                 </CardContent>
               </CardActionArea>

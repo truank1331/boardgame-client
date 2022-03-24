@@ -101,8 +101,13 @@ const Home: NextPage = () => {
           <BoardgameComponent boardgameData={boardgames} onClickBoardgame={onClickBoardgame} />
         </Box>
       </Box>
-
       <Box />
+      <SpeedDial
+        ariaLabel="SpeedDial basic example"
+        sx={{ position: "absolute", bottom: "32px", right: "64px" }}
+        icon={<SpeedDialIcon />}
+        onClick={handleOpenFormModal}
+      />
       <BoardgameDialog
         boardgame={boardgame}
         handleCloseModal={handleCloseModal}
@@ -114,12 +119,6 @@ const Home: NextPage = () => {
         modalStatus={formModalStatus}
         gameList={boardgames}
         playerList={users}
-      />
-      <SpeedDial
-        ariaLabel="SpeedDial basic example"
-        sx={{ position: "absolute", bottom: "32px", right: "64px" }}
-        icon={<SpeedDialIcon />}
-        onClick={handleOpenFormModal}
       />
     </Box>
   );

@@ -106,12 +106,13 @@ export function FormDialog(props: FormDialogProps) {
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
+          width: "80%",
           bgcolor: "background.paper",
           boxShadow: 24,
           p: 4,
         }}
       >
-        <Box sx={{ marginLeft: "16px", width: "fit-content", minWidth: "600px" }}>
+        <Box sx={{ marginLeft: "16px", width: "100%" }}>
           <Box sx={{ marginBottom: "8px" }}>
             <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
               <Typography id="modal-modal-title" variant="h5" component="h2">
