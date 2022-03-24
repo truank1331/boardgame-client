@@ -153,7 +153,7 @@ export function FormDialog(props: FormDialogProps) {
 
           <Paper
             elevation={0}
-            style={{ maxHeight: "60%", overflow: "auto", padding: "8px", marginTop: "16px", marginBottom: "16px" }}
+            style={{ maxHeight: "50%", overflow: "auto", padding: "8px", marginTop: "16px", marginBottom: "16px" }}
           >
             {playerNumber.map((item, index) => (
               <Box sx={{ width: "100%", typography: "body1" }} key={index}>

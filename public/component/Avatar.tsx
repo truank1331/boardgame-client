@@ -20,7 +20,7 @@ export function stringToColor(string: String) {
   return color;
 }
 
-function stringAvatar(name: string) {
+function stringAvatar(name: String) {
   return {
     sx: {
       bgcolor: stringToColor(name),
