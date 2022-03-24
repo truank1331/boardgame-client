@@ -176,7 +176,8 @@ export function BoardgameDialog(props: BoardgameDialogProps) {
               </Box>
             </Box>
           )}
-          <Box
+          <Grid
+            container
             sx={{
               display: "flex",
               flex: 1,
@@ -185,9 +186,12 @@ export function BoardgameDialog(props: BoardgameDialogProps) {
               alignItems: "end",
             }}
           >
-            <Box>
+            <Grid item lg={4} sm={6} xs={12}>
               <Typography id="modal-modal-title" variant="body1" component="h2">
                 เล่นล่าสุดเมื่อ 01/01/1999
+              </Typography>
+              <Typography id="modal-modal-title" variant="body1" component="h2">
+                {". "}
               </Typography>
               <Typography id="modal-modal-title" variant="body1" component="h2">
                 เวลาเล่นทั้งสิ้น X ชม.
@@ -198,8 +202,8 @@ export function BoardgameDialog(props: BoardgameDialogProps) {
               <Typography id="modal-modal-title" variant="body1" component="h2">
                 เล่นครั้งแรกเมื่อ 01/01/1999
               </Typography>
-            </Box>
-            <Box sx={{}}>
+            </Grid>
+            <Grid item lg={4} sm={6} xs={12}>
               <Typography id="modal-modal-title" variant="body1" component="h2">
                 จำนวน X เกม
               </Typography>
@@ -212,8 +216,8 @@ export function BoardgameDialog(props: BoardgameDialogProps) {
               <Typography id="modal-modal-title" variant="body1" component="h2">
                 แต้มเฉลี่ย X คะแนน
               </Typography>
-            </Box>
-            <Box sx={{}}>
+            </Grid>
+            <Grid item lg={4} sm={6} xs={12}>
               <Typography id="modal-modal-title" variant="body1" component="h2">
                 จำนวน X เกม
               </Typography>
@@ -226,8 +230,8 @@ export function BoardgameDialog(props: BoardgameDialogProps) {
               <Typography id="modal-modal-title" variant="body1" component="h2">
                 แต้มเฉลี่ย X คะแนน
               </Typography>
-            </Box>
-          </Box>
+            </Grid>
+          </Grid>
         </Grid>
         <Grid
           xs={12}
