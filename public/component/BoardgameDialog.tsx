@@ -1,4 +1,4 @@
-import { Box, Chip, CircularProgress, Modal, Stack, Typography } from "@mui/material";
+import { Box, Chip, CircularProgress, Grid, Modal, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { BoardgameApiData, UserApiData } from "../../pages";
 import { AvartarComponent, stringToColor } from "./Avatar";
@@ -80,29 +80,36 @@ export function BoardgameDialog(props: BoardgameDialogProps) {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box
+      <Grid
+        container
+        spacing={1}
         sx={{
           position: "absolute",
           display: "flex",
-          flexDirection: "row",
+          flexDirection: "row-reverse",
           flex: 1,
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
           bgcolor: "background.paper",
+          width: "80%",
+          maxHeight: "100%",
           boxShadow: 24,
           p: 4,
+          overflow: "auto",
         }}
       >
-        <Box sx={{ display: "flex", flex: 1, width: "fit-content", height: "fit-content" }}>
-          <img
-            src={boardgame.pictureUrl}
-            loading="lazy"
-            width={"fit-content"}
-            style={{ maxWidth: "800px", maxHeight: "1400px" }}
-          />
-        </Box>
-        <Box sx={{ marginLeft: "16px", width: "fit-content", minWidth: "600px" }}>
+        <Grid
+          item
+          xs={12}
+          lg={6}
+          sx={{
+            display: "flex",
+            flex: 1,
+            flexDirection: "column",
+            width: "50%",
+          }}
+        >
           <Box sx={{ marginBottom: "8px" }}>
             <Box sx={{ display: "flex", flexDirection: "row", flex: 1 }}>
               <Typography id="modal-modal-title" variant="h6" component="h2">
@@ -114,7 +121,7 @@ export function BoardgameDialog(props: BoardgameDialogProps) {
             <Typography>{boardgame.thaiName}</Typography>
           </Box>
 
-          <Stack direction="row" spacing={2}>
+          <Stack direction="row" spacing={2} sx={{ display: "flex", flexDirection: "row", height: "fit-content" }}>
             {users.map((user, index) => (
               <AvartarComponent name={user.username} key={index} />
             ))}
@@ -145,7 +152,15 @@ export function BoardgameDialog(props: BoardgameDialogProps) {
                 height: "80%",
               }}
             >
-              <Box sx={{ alignSelf: "center", display: "flex", flex: 1, width: "100%", height: "fit-content" }}>
+              <Box
+                sx={{
+                  alignSelf: "center",
+                  display: "flex",
+                  flex: 1,
+                  width: "100%",
+                  height: "fit-content",
+                }}
+              >
                 <Line
                   options={{
                     responsive: true,
@@ -159,47 +174,83 @@ export function BoardgameDialog(props: BoardgameDialogProps) {
                   data={chartData}
                 />
               </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  flex: 1,
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
-                <Box>
-                  <Typography id="modal-modal-title" variant="body1" component="h2">
-                    เล่นล่าสุดเมื่อ 01/01/1999
-                  </Typography>
-                  <Typography id="modal-modal-title" variant="body1" component="h2">
-                    เวลาเล่นทั้งสิ้น X ชม.
-                  </Typography>
-                  <Typography id="modal-modal-title" variant="body1" component="h2">
-                    เวลาเล่นเฉลี่ย X ชม.
-                  </Typography>
-                  <Typography id="modal-modal-title" variant="body1" component="h2">
-                    เล่นครั้งแรกเมื่อ 01/01/1999
-                  </Typography>
-                </Box>
-                <Box sx={{ marginLeft: "64px" }}>
-                  <Typography id="modal-modal-title" variant="body1" component="h2">
-                    จำนวน X เกม
-                  </Typography>
-                  <Typography id="modal-modal-title" variant="body1" component="h2">
-                    แต้มสูงสุด X คะแนน
-                  </Typography>
-                  <Typography id="modal-modal-title" variant="body1" component="h2">
-                    แต้มต่ำสุด X คะแนน
-                  </Typography>
-                  <Typography id="modal-modal-title" variant="body1" component="h2">
-                    แต้มเฉลี่ย X คะแนน
-                  </Typography>
-                </Box>
-              </Box>
             </Box>
           )}
-        </Box>
-      </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "end",
+            }}
+          >
+            <Box>
+              <Typography id="modal-modal-title" variant="body1" component="h2">
+                เล่นล่าสุดเมื่อ 01/01/1999
+              </Typography>
+              <Typography id="modal-modal-title" variant="body1" component="h2">
+                เวลาเล่นทั้งสิ้น X ชม.
+              </Typography>
+              <Typography id="modal-modal-title" variant="body1" component="h2">
+                เวลาเล่นเฉลี่ย X ชม.
+              </Typography>
+              <Typography id="modal-modal-title" variant="body1" component="h2">
+                เล่นครั้งแรกเมื่อ 01/01/1999
+              </Typography>
+            </Box>
+            <Box sx={{}}>
+              <Typography id="modal-modal-title" variant="body1" component="h2">
+                จำนวน X เกม
+              </Typography>
+              <Typography id="modal-modal-title" variant="body1" component="h2">
+                แต้มสูงสุด X คะแนน
+              </Typography>
+              <Typography id="modal-modal-title" variant="body1" component="h2">
+                แต้มต่ำสุด X คะแนน
+              </Typography>
+              <Typography id="modal-modal-title" variant="body1" component="h2">
+                แต้มเฉลี่ย X คะแนน
+              </Typography>
+            </Box>
+            <Box sx={{}}>
+              <Typography id="modal-modal-title" variant="body1" component="h2">
+                จำนวน X เกม
+              </Typography>
+              <Typography id="modal-modal-title" variant="body1" component="h2">
+                แต้มสูงสุด X คะแนน
+              </Typography>
+              <Typography id="modal-modal-title" variant="body1" component="h2">
+                แต้มต่ำสุด X คะแนน
+              </Typography>
+              <Typography id="modal-modal-title" variant="body1" component="h2">
+                แต้มเฉลี่ย X คะแนน
+              </Typography>
+            </Box>
+          </Box>
+        </Grid>
+        <Grid
+          xs={12}
+          lg={6}
+          item
+          sx={{
+            display: "flex",
+            flex: 1,
+            width: "fit-content",
+            height: "fit-content",
+            maxHeight: "50%",
+            flexDirection: "column",
+          }}
+        >
+          <img
+            src={boardgame.pictureUrl}
+            loading="lazy"
+            width="fit-content"
+            height="fit-content"
+            style={{ maxWidth: "fit-content", maxHeight: "fit-content" }}
+          />
+        </Grid>
+      </Grid>
     </Modal>
   );
 }
