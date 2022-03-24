@@ -108,6 +108,7 @@ export function FormDialog(props: FormDialogProps) {
           transform: "translate(-50%, -50%)",
           width: "90%",
           height: "fit-content",
+          maxHeight: "80%",
           bgcolor: "background.paper",
           boxShadow: 24,
           p: 2,
@@ -152,7 +153,7 @@ export function FormDialog(props: FormDialogProps) {
 
           <Paper
             elevation={0}
-            style={{ maxHeight: 500, overflow: "auto", padding: "8px", marginTop: "16px", marginBottom: "16px" }}
+            style={{ maxHeight: "60%", overflow: "auto", padding: "8px", marginTop: "16px", marginBottom: "16px" }}
           >
             {playerNumber.map((item, index) => (
               <Box sx={{ width: "100%", typography: "body1" }} key={index}>

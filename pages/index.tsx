@@ -92,9 +92,9 @@ const Home: NextPage = () => {
       }}
     >
       <AppBarComponent title="BoardGame" />
-      <Box style={{ margin: "64px", marginTop: "32px" }}>
+      <Box style={{ margin: "32px", marginTop: "32px" }}>
         <Box>
-          <Skeleton variant="rectangular" style={{ height: "50vh", maxHeight: "400px" }} />
+          <Skeleton variant="rectangular" style={{ height: "40vh", maxHeight: "30%" }} />
           <LinearProgress color="secondary" />
         </Box>
         <Box>

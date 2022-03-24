@@ -1,4 +1,4 @@
-import { Card, CardActionArea, CardContent, CardMedia, Skeleton, Typography } from "@mui/material";
+import { Box, Card, CardActionArea, CardContent, CardMedia, Skeleton, Typography } from "@mui/material";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -8,7 +8,7 @@ import "swiper/css/navigation";
 
 import { Pagination, Navigation } from "swiper";
 import { BoardgameApiData } from "../../pages";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface BoardgameProps {
   boardgameData: BoardgameApiData[];
@@ -19,11 +19,27 @@ export function BoardgameComponent(props: BoardgameProps) {
   const boardgames = props.boardgameData;
   const onClickBoardgame = props.onClickBoardgame;
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  //choose the screen size
+  const handleResize = () => {
+    if (window.innerWidth < 560) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  };
+
+  // create an event listener
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+  });
+
   return (
     <Swiper
-      slidesPerView={5}
+      slidesPerView={isMobile ? 1 : 5}
       spaceBetween={30}
-      slidesPerGroup={4}
+      slidesPerGroup={isMobile ? 1 : 4}
       loop={true}
       navigation={true}
       modules={[Pagination, Navigation]}
