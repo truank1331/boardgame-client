@@ -25,7 +25,7 @@ export interface UserApiData {
   password: String;
 }
 
-const SERVER_PRIVATE = "192.168.1.102";
+const SERVER_PRIVATE = "192.168.1.103";
 
 const Home: NextPage = () => {
   const [boardgames, setBoardgames] = useState<BoardgameApiData[]>([]);
